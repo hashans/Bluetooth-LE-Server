@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final long SCAN_PERIOD = 10000;
     TextView value1Text;
     TextView value2Text;
-    CheckBox advertiseCheckbox;
+    Switch advertiseSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +71,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        advertiseCheckbox = (CheckBox)findViewById(R.id.advertise_checkBox);
-
-
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, "Bluetooth LE not supported", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-
+        advertiseSwitch = (Switch)findViewById(R.id.switch1);
 
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         blePeri = new BLEPeripheral(this,mHandler);
 
-        advertiseCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        advertiseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){

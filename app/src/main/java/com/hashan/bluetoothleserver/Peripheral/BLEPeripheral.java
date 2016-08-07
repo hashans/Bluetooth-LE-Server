@@ -21,9 +21,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-/**
- * Created by hashan on 7/16/16.
- */
 public class BLEPeripheral {
 
     BluetoothManager mBManager;
@@ -38,16 +35,6 @@ public class BLEPeripheral {
     private HashSet<BluetoothDevice> mBluetoothDevices;
 
     Handler mHandler;
-
-    public interface WriteCallback {
-        void onWrite(byte[] data);
-    }
-
-    WriteCallback mWriteCallback;
-
-    public static boolean isEnableBluetooth(){
-        return BluetoothAdapter.getDefaultAdapter().isEnabled();
-    }
 
 
     public BLEPeripheral(Context context, Handler handler) {
@@ -205,8 +192,8 @@ public class BLEPeripheral {
 
         BluetoothGattCharacteristic read1Characteristic = new BluetoothGattCharacteristic(
                 UUID.fromString(CustomConstants.CHAR_READ1),
-                BluetoothGattCharacteristic.PROPERTY_READ,
-                BluetoothGattCharacteristic.PERMISSION_READ
+                BluetoothGattCharacteristic.PROPERTY_READ  | BluetoothGattCharacteristic.PROPERTY_WRITE,
+                BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE
         );
 
         BluetoothGattCharacteristic read2Characteristic = new BluetoothGattCharacteristic(
@@ -215,22 +202,13 @@ public class BLEPeripheral {
                 BluetoothGattCharacteristic.PERMISSION_READ
         );
 
-        BluetoothGattCharacteristic writeCharacteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CustomConstants.CHAR_WRITE),
-                BluetoothGattCharacteristic.PROPERTY_WRITE,
-                BluetoothGattCharacteristic.PERMISSION_WRITE
-        );
+
 
 
 
         read1Characteristic.setValue(read1Data.getBytes());
         read2Characteristic.setValue(read2Data.getBytes());
 
-        BluetoothGattDescriptor read2Descriptor = new BluetoothGattDescriptor(UUID.fromString(CustomConstants.CLIENT_CHARACTERISTIC_CONFIG),
-                (BluetoothGattDescriptor.PERMISSION_READ | BluetoothGattDescriptor.PERMISSION_WRITE));
-        read2Descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-
-        read2Characteristic.addDescriptor(read2Descriptor);
 
 
         BluetoothGattService AService = new BluetoothGattService(
@@ -240,8 +218,6 @@ public class BLEPeripheral {
 
         AService.addCharacteristic(read1Characteristic);
         AService.addCharacteristic(read2Characteristic);
-        AService.addCharacteristic(writeCharacteristic);
-
 
         mGattServer.addService(AService);
 

@@ -26,8 +26,6 @@ import java.util.UUID;
  */
 public class BLEPeripheral {
 
-
-
     BluetoothManager mBManager;
     BluetoothAdapter mBAdapter;
 
@@ -40,9 +38,6 @@ public class BLEPeripheral {
     private HashSet<BluetoothDevice> mBluetoothDevices;
 
     Handler mHandler;
-
-
-    private static final UUID SERVICE_UUID = UUID.fromString("3eedac9f-c402-4465-87bb-0aa8c6678a36");
 
     public interface WriteCallback {
         void onWrite(byte[] data);
@@ -73,7 +68,6 @@ public class BLEPeripheral {
         dataBuilder = new AdvertiseData.Builder();
         mBAdapter.setName("SimplePeripheral");
         dataBuilder.setIncludeDeviceName(true);
-        //dataBuilder.addServiceUuid(new ParcelUuid(SERVICE_UUID));
 
 
         mGattServer = mBManager.openGattServer(context, new BluetoothGattServerCallback() {
@@ -249,21 +243,7 @@ public class BLEPeripheral {
         AService.addCharacteristic(writeCharacteristic);
 
 
-        final BluetoothGattCharacteristic notifyCharacteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(CustomConstants.CHAR_NOTIFY),
-                BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-                BluetoothGattCharacteristic.PERMISSION_READ
-        );
-
-
-
-        notifyCharacteristic.setValue(new String("0"));
-        AService.addCharacteristic(notifyCharacteristic);
-
-        final Handler handler = new Handler();
-
         mGattServer.addService(AService);
-
 
     }
 

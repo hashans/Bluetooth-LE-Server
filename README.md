@@ -12,3 +12,6 @@ Note: Android Bluetooth LE Server is possible only from API 21 onwards
 <li>Android Build Tools v23.0.3</li>
 <li>Android Support Repository</li>
 </ul>
+
+# Screenshots
+<img src="screenshots/screenshot1.png" width="250" />
